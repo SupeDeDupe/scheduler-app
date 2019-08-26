@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Day(props) {
-    return <div className="day">{props.name}</div>
+    return <button className="day">{props.name}</button>
 }
 
 function Week(props) {
@@ -35,15 +35,14 @@ function Month(props) {
     );
 }
 
-class Calendar extends React.Component{
+function Calendar(props) {
 
-    render(){
-        return (
-            <div className="calendar">
-                <Month></Month>
-            </div>
-        );
-    }
+    return (
+        <div className="calendar">
+            <h1>Sarah's Calendar</h1>
+            <Month></Month>
+        </div>
+    );
 }
 
 ReactDOM.render(
