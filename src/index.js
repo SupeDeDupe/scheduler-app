@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
 
 function Day(props) {
     return (
@@ -27,11 +29,17 @@ function Week(props) {
 function Month(props) {
     let currentMonth = (props.date).getMonth();
     let monthName = getMonthName(currentMonth);
+    
+    let monthYear = monthName + " " + ((props.date).getFullYear()).toString();
     // let date = new Date(2019, 8).getDay();
     // let date2 = 32 — new Date(2019, 8, 32).getDate();
     return (
         <div className="month">
-            <h2>{monthName}</h2>
+            <Row md="auto" className="justify-content-md-center">
+                <Button></Button>
+                <h2>{monthYear}</h2>
+                <Button></Button>
+            </Row>
             <table>
                 <thead>
                     <tr>
