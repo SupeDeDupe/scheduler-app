@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Day(props) {
-    return <button className="day">{props.name}</button>
+    return (
+        <button className="day">{props.name}</button>
+    );
 }
 
 function Week(props) {
@@ -22,10 +24,13 @@ function Week(props) {
 }
 
 function Month(props) {
-    
-
+    let currentMonth = (props.date).getMonth();
+    let monthName = getMonthName(currentMonth);
+    // let date = new Date(2019, 8).getDay();
+    // let date2 = 32 — new Date(2019, 8, 32).getDate();
     return (
         <div className="month">
+            <h2>{monthName}</h2>
             <Week></Week>
             <Week></Week>
             <Week></Week>
@@ -36,11 +41,12 @@ function Month(props) {
 }
 
 function Calendar(props) {
+    let date = new Date();
 
     return (
         <div className="calendar">
             <h1>Sarah's Calendar</h1>
-            <Month></Month>
+            <Month date={date}></Month>
         </div>
     );
 }
@@ -49,4 +55,10 @@ ReactDOM.render(
     <Calendar />,
     document.getElementById('root')
   );
+
+function getMonthName (num) {
+    var months = [ "January", "February", "March", "April", "May", "June", 
+                "July", "August", "September", "October", "November", "December" ];
+    return months[num];
+}
   
