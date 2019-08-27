@@ -36,9 +36,9 @@ function Month(props) {
     return (
         <div className="month">
             <Row md="auto" className="justify-content-md-center">
-                <Button></Button>
+                <Button id="prev" variant="outline-secondary">Prev</Button>
                 <h2>{monthYear}</h2>
-                <Button></Button>
+                <Button id="next" variant="outline-secondary">Next</Button>
             </Row>
             <table>
                 <thead>
