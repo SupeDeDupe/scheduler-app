@@ -39,14 +39,10 @@ function Week(props) {
 function Month(props) {
 
     let month = (props.fullDate).getMonth();
-    let monthName = getMonthName(month);
     let year = ((props.fullDate).getFullYear()).toString();
-    
-    
-    let monthAndYear = monthName + " " + year;
-    let offset = props.fullDate.getDay();
     let date = 1;
     const endDate = getMonthTotal(year, month);
+    const offset = props.fullDate.getDay();
     const sevenDays = 7;
 
     return (
@@ -59,7 +55,7 @@ function Month(props) {
                 >
                     Prev
                 </Button>
-                <h2>{monthAndYear}</h2>
+                <h2>{props.header}</h2>
                 <Button 
                     id="next" 
                     variant="outline-secondary"
@@ -96,17 +92,24 @@ function Calendar(props) {
     let date = new Date();
     date.setDate(1);
     const [fullDate, setDate] = useState(date);
+    
+    const [header, setHeader] = useState(getMonthName(fullDate.getMonth()) + " " + (fullDate.getFullYear()).toString());
 
     function setMonth(newMonth) {
-        fullDate.setMonth(newMonth);
-        console.log(fullDate);
-        setDate(fullDate);
+        let tempDate = fullDate;
+        tempDate.setMonth(newMonth);
+        setDate(tempDate);
+        setHeader(getMonthName(fullDate.getMonth()) + " " + (fullDate.getFullYear()).toString());
     }
 
     return (
         <Container className="calendar">
             <h1>Sarah's Calendar</h1>
-            <Month fullDate={fullDate} onClick={(m) => setMonth(m)}></Month>
+            <Month 
+                header={header} 
+                fullDate={fullDate} 
+                onClick={(m) => setMonth(m)}
+            />
         </Container>
     );
 }
