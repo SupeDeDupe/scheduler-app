@@ -12,17 +12,15 @@ function Day(props) {
 }
 
 function Week(props) {
-    console.log(props.date);
     let date = props.date;
-    let tempDate = date;
+    let tempValue = date;
     const offset = props.offset ? props.offset : 0;
     
     let week = offset ? new Array(7 - offset) : new Array(7);
-    week = week.fill(null).map(() => tempDate++);
-    console.log(week.toString());
+    week = week.fill(null).map(() => tempValue++);
 
     let id=0;
-    let blankDays = new Array(offset).fill(<td key={id++}><Day></Day></td>);
+    let blankDays = new Array(offset).fill(null).map(() => <td key={id++}><Day></Day></td>);
 
     let days = week.map((index) => {
         return (
