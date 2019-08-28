@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Container from 'react-bootstrap/Container';
@@ -37,22 +37,36 @@ function Week(props) {
 }
 
 function Month(props) {
-    let month = (props.date).getMonth();
+
+    let month = (props.fullDate).getMonth();
     let monthName = getMonthName(month);
-    let year = ((props.date).getFullYear()).toString();
+    let year = ((props.fullDate).getFullYear()).toString();
     
     
     let monthAndYear = monthName + " " + year;
-    let offset = props.date.getDay();
+    let offset = props.fullDate.getDay();
     let date = 1;
-    let endDate = getMonthTotal(year, month);
+    const endDate = getMonthTotal(year, month);
     const sevenDays = 7;
+
     return (
         <div className="month">
             <Row md="auto" className="justify-content-md-center">
-                <Button id="prev" variant="outline-secondary">Prev</Button>
+                <Button 
+                    id="prev" 
+                    variant="outline-secondary"
+                    onClick={() => props.onClick(--month)}
+                >
+                    Prev
+                </Button>
                 <h2>{monthAndYear}</h2>
-                <Button id="next" variant="outline-secondary">Next</Button>
+                <Button 
+                    id="next" 
+                    variant="outline-secondary"
+                    onClick={() => props.onClick(++month)}
+                >
+                    Next
+                </Button>
             </Row>
             <table>
                 <thead>
@@ -68,7 +82,7 @@ function Month(props) {
                 </thead>
                 <tbody>
                     <Week offset={offset} date={date} endDate={endDate}></Week>
-                    <Week date={date+=sevenDays-offset} endDate={endDate}></Week>
+                    <Week date={date+=(sevenDays-offset)} endDate={endDate}></Week>
                     <Week date={date+=sevenDays} endDate={endDate}></Week>
                     <Week date={date+=sevenDays} endDate={endDate}></Week>
                     <Week date={date+=sevenDays} endDate={endDate}></Week>
@@ -79,12 +93,20 @@ function Month(props) {
 }
 
 function Calendar(props) {
-    let date = new Date(2019, 7);
+    let date = new Date();
+    date.setDate(1);
+    const [fullDate, setDate] = useState(date);
+
+    function setMonth(newMonth) {
+        fullDate.setMonth(newMonth);
+        console.log(fullDate);
+        setDate(fullDate);
+    }
 
     return (
         <Container className="calendar">
             <h1>Sarah's Calendar</h1>
-            <Month date={date}></Month>
+            <Month fullDate={fullDate} onClick={(m) => setMonth(m)}></Month>
         </Container>
     );
 }
