@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Fragment } from 'react'
 import ReactDOM from 'react-dom';
 import './index.css';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { Keyframes, animated } from 'react-spring/renderprops';
 import { Icon } from 'antd';
 import delay from 'delay';
@@ -11,25 +13,37 @@ import delay from 'delay';
 // Creates a spring with predefined animation slots
 const Sidebar = Keyframes.Spring({
     // Slots can take arrays/chains,
-    peek: [{ x: 0, from: { x: -100 }, delay: 500 }, { x: -100, delay: 800 }],
+    peek: [{ x: 0, from: { x: -140 }, delay: 500 }, { x: -140, delay: 800 }],
     // single items,
     open: { delay: 0, x: 0 },
     // or async functions with side-effects
     close: async call => {
       await delay(400)
-      await call({ delay: 0, x: -100 })
+      await call({ delay: 0, x: -140 })
     },
   })
   
   // Creates a keyframed trail
   const Content = Keyframes.Trail({
     peek: [
-      { x: 0, opacity: 1, from: { x: -100, opacity: 0 }, delay: 600 },
-      { x: -100, opacity: 0, delay: 0 },
+      { x: 0, opacity: 1, from: { x: -140, opacity: 0 }, delay: 600 },
+      { x: -140, opacity: 0, delay: 0 },
     ],
     open: { x: 0, opacity: 1, delay: 100 },
-    close: { x: -100, opacity: 0, delay: 0 },
+    close: { x: -140, opacity: 0, delay: 0 },
   })
+
+  const items = [
+     <Fragment>
+        <Button
+        size="small"
+        type="primary"
+        variant="outline-dark"
+        className="sidebar-button"
+        children="View Day"
+        />
+    </Fragment>
+  ]
 
 function Day(props) {
     return (
@@ -76,7 +90,7 @@ function Month(props) {
             <Row md="auto" className="justify-content-md-center">
                 <Button 
                     id="prev" 
-                    variant="outline-secondary"
+                    variant="outline-dark"
                     onClick={() => props.onClick(--month)}
                 >
                     Prev
@@ -84,7 +98,7 @@ function Month(props) {
                 <h2>{props.header}</h2>
                 <Button 
                     id="next" 
-                    variant="outline-secondary"
+                    variant="outline-dark"
                     onClick={() => props.onClick(++month)}
                 >
                     Next
@@ -145,8 +159,57 @@ export default class App extends React.Component {
     toggle = () => this.setState(state => ({ open: !state.open }))
 
     render() {
+        const state =
+        this.state.open === undefined
+            ? 'peek'
+            : this.state.open
+            ? 'open'
+            : 'close'
+        const icon = this.state.open ? 'fold' : 'unfold'
+
         return (
-            <Calendar></Calendar>
+            <Container fluid={true} className="full-height">
+                <Row className="full-height">
+                    <Col xs={3} className="sidebar-col">
+                        <Icon
+                        type={`menu-${icon}`}
+                        className="sidebar-toggle"
+                        onClick={this.toggle}
+                        />
+                        <Sidebar native state={state}>
+                        {({ x }) => (
+                            <animated.div
+                            className="sidebar"
+                            style={{
+                                transform: x.interpolate(x => `translate3d(${x}%,0,0)`),
+                            }}>
+                            <Content
+                                native
+                                items={items}
+                                keys={items.map((_, i) => i)}
+                                reverse={!this.state.open}
+                                state={state}>
+                                {(item, i) => ({ x, ...props }) => (
+                                <animated.div
+                                    style={{
+                                    transform: x.interpolate(x => `translate3d(${x}%,0,0)`),
+                                    ...props,
+                                    }}>
+                                    
+                                    {item}
+                                </animated.div>
+                                )}
+                            </Content>
+                            </animated.div>
+                        )}
+                        </Sidebar>
+                    </Col>
+                    
+                    <Col xs={6}>
+                        <Calendar></Calendar>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
