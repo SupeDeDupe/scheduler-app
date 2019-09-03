@@ -80,6 +80,9 @@ h2 {
     font-size: 1.5em;
     cursor: pointer;
 }
+.sidebar-toggle:hover {
+    color: #343A40 !important;
+}
 
 .sidebar .ant-form-item {
     margin: 0;
